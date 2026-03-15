@@ -2,7 +2,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 export function getAIClient() {
   // Use dynamically selected API key if available, otherwise fallback to default
-  return new GoogleGenAI({ apiKey: process.env.API_KEY || process.env.GEMINI_API_KEY as string });
+  const apiKey = (import.meta.env.VITE_GEMINI_API_KEY as string) || (process.env.GEMINI_API_KEY as string);
+  return new GoogleGenAI({ apiKey });
 }
 
 export interface Concept {
@@ -163,7 +164,7 @@ export async function generateVideo(prompt: string, imageBase64: string): Promis
       throw new Error(`No video URI returned from the API. Operation: ${JSON.stringify(operation)}`);
     }
 
-    const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+    const apiKey = (import.meta.env.VITE_GEMINI_API_KEY as string) || (process.env.GEMINI_API_KEY as string);
     const response = await fetch(downloadLink, {
       method: 'GET',
       headers: {
